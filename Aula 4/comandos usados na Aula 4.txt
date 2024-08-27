@@ -1,0 +1,206 @@
+ Apagar tabela 
+
+drop table (nomedatabela)
+
+
+(criar nova )
+create table categoria(codigo_categoria serial primary key, nome varchar(30));
+
+create table produto(codigo_produto serial primary key,
+nome varchar(60) not null, descricao varchar(60),
+preco numeric check(preco > 0), quantidade_estoque smallint default 0,
+codigo_categoria int,
+foreign key (codigo_categoria) references categoria (codigo_categoria));
+
+insert into categoria(nome) values ('Eletrônicos'),('Alimentos'),
+('Perfumaria'),('Farmácia')
+
+select * from categoria
+
+INSERT INTO PRODUTO (nome, descricao, preco, quantidade_estoque,codigo_categoria) VALUES('Arroz','Tio João',7.5,40,2);
+INSERT INTO PRODUTO (nome, descricao, preco, quantidade_estoque,codigo_categoria) VALUES('Feijão','Carreteiro',8.5,30,2);
+INSERT INTO PRODUTO (nome, descricao, preco, quantidade_estoque,codigo_categoria) VALUES('Feijão','Granfino',8.5,30,2);
+INSERT INTO PRODUTO (nome, descricao, preco, quantidade_estoque,codigo_categoria) VALUES('Macarrão','Adria',6.65,10,2);
+INSERT INTO PRODUTO (nome, descricao, preco, quantidade_estoque,codigo_categoria) VALUES('Farinha de Trigo','Boa Sorte',2.5,8,2);
+INSERT INTO PRODUTO (nome, descricao, preco, quantidade_estoque,codigo_categoria) VALUES('Sal','Cisne',2.5,100,2);
+INSERT INTO PRODUTO (nome, descricao, preco, quantidade_estoque,codigo_categoria) VALUES('Atum','Gomes da Costa',6.8,42,2);
+INSERT INTO PRODUTO (nome, descricao, preco, quantidade_estoque,codigo_categoria) VALUES('Leite Condensado','Nestle',5.9,40,2);
+INSERT INTO PRODUTO (nome, descricao, preco, quantidade_estoque,codigo_categoria) VALUES('Creme de Leite','Pirancajuba',2.8,15,2);
+INSERT INTO PRODUTO (nome, descricao, preco, quantidade_estoque,codigo_categoria) VALUES('Arroz','Carreteiro',7.5,4,2);
+INSERT INTO PRODUTO (nome, descricao, preco, quantidade_estoque,codigo_categoria) VALUES('Neosoro','EMS',17.5,4,1);
+
+select * from produto
+
+(mostrar os produtos e não repetir o mesmo)
+select   distinct nome from  produto order by nome 
+
+select  *  from  produto where  preco between 2.5 and 5
+
+select  *  from  produto where  preco >8
+
+select  *  from  produto where  preco  not >8
+
+select  *  from  produto  where preco in(2.5,7.5,8.5)
+
+select  *  from  produto  where preco  not in(2.5,7.5,8.5)
+
+select  *  from  produto  where nome like '%eite%'
+
+select  *  from  produto  where nome ilike '%leite%'
+
+
+select  max(preco) from produto
+
+select  min(preco) from produto
+
+select sum(quantidade_estoque)  from produto
+
+select avg(preco) from produto 
+
+select round(avg(preco),2) from produto 
+
+select round(avg(preco),2) as media_preco from produto 
+
+
+select sum(quantidade_estoque) from produto where nome = 'Arroz'
+
+select nome, count(nome) from produto
+group by nome order by nome
+
+select nome, count(nome) as total from produto
+group by nome order by total
+
+select nome, count(nome) as total from produto
+group by nome
+having count(nome) >= 2
+
+
+
+INSERT INTO produto (nome, descricao, preco, quantidade_estoque,codigo_categoria) VALUES('Creme de Leite','Itambé',2.8,25,null);
+INSERT INTO produto (nome, descricao, preco, quantidade_estoque,codigo_categoria) VALUES('Arroz','Princesa',6.5,44,null);
+INSERT INTO produto (nome, descricao, preco, quantidade_estoque,codigo_categoria) VALUES('Colírio','EMS',22.5,30,null);
+
+select * from produto p
+inner join categoria c 
+on p.codigo_categoria = c.codigo_categoria order by p.nome 
+
+
+select * from produto p
+right join categoria c 
+on p.codigo_categoria = c.codigo_categoria order by p.nome 
+
+Gerar uma consulta para listar o nome do atleta, e o time que joga
+
+select a.nome,t.nome from atleta a 
+inner join time t on a.codigo_atleta = t.codigo_time
+
+
+drop table cliente
+create table cliente (codigo_cliente serial primary key,
+	nome varchar(50), telefone varchar(11),
+	estado_civil  enum_estado_civil
+);
+
+insert into cliente(nome,telefone,estado_civil)
+values('Antônio','2234335','SOLTEIRO');
+
+insert into cliente(nome,telefone,estado_civil)
+values('Maria','2224335','CASADO'),('André','22242335','SOLTEIRO')
+
+create table banco(codigo_banco serial primary key,
+	nome varchar(60) not null);
+
+
+create table emprestimo (codigo_emprestimo serial primary key,
+	valor numeric, taxa numeric, numero_parcelas smallint,
+	codigo_cliente int, codigo_banco int,
+	foreign key (codigo_cliente) references cliente (codigo_cliente),
+	foreign key (codigo_banco) references banco (codigo_banco));
+
+INSERT INTO emprestimo (codigo_cliente, codigo_banco,
+valor, taxa, numero_parcelas) VALUES
+(1, 1, 10000.00, 0.05, 12),
+(2, 2, 15000.00, 0.06, 24);
+
+
+
+create table pagamento(codigo_pagamento serial primary key,
+	data date, valor numeric, codigo_emprestimo int,
+	foreign key (codigo_emprestimo) references emprestimo (codigo_emprestimo)
+	
+);
+
+
+
+INSERT INTO pagamento (codigo_emprestimo, data, valor) VALUES
+(1, '2024-01-15', 1000.00),
+(1, '2024-02-15', 1000.00),
+(1, '2024-03-15', 1000.00),
+(2, '2024-01-20', 1500.00),
+(2, '2024-02-20', 1500.00);
+
+select c.nome from cliente as c
+inner join emprestimo as e on
+c.codigo_cliente = e.codigo_cliente
+
+select count(*) from emprestimo
+
+select b.nome,count(e.codigo_emprestimo) as total from banco b
+inner join emprestimo e on b.codigo_banco = e.codigo_banco
+group by b.nome;
+
+exercicio 1:
+
+Cadastrar marca de carro (codigo_marca e descricao)
+Cadastrar modelo de carro (codigo_modelo, descrição, valor, ano)
+
+criar as tabelas e relacionar marca e modelo
+
+popular as tabelas
+
+
+listar o carro e sua marca corresponde (inner join)
+
+listar o carro mais caro e o nome do carro
+
+listar o carro mais barato e o nome do carro
+
+listar o total de carros cadastrados
+
+create table marca(codigo_marca serial primary key, descricao varchar(30));
+insert into marca (descricao) values('VW'),('GM'),('Renault'),('Fiat'),('Ford')
+
+create table modelo (codigo_modelo serial primary key, nome varchar(30),
+valor numeric, ano int, codigo_marca int,
+foreign key(codigo_marca)references marca(codigo_marca));
+
+insert into modelo (nome, valor, ano, codigo_marca)
+values ('Gol',25000,1999, 1),('Cruze',45000,2015, 2),
+('Sandero',48900,2018, 3), ('T-Cross',125000,2024, 1)
+
+
+select m.descricao, mo.nome from modelo mo
+inner join marca m on mo.codigo_marca = m.codigo_marca order by m.descricao
+
+SELECT codigo_modelo, descricao, valor, ano
+FROM modelo
+ORDER BY valor DESC
+LIMIT 1;
+
+SELECT codigo_modelo, descricao, valor, ano
+FROM modelo
+ORDER BY valor ASC
+LIMIT 1;
+
+(SELECT codigo_modelo, descricao, valor, ano
+FROM modelo
+ORDER BY valor DESC
+LIMIT 1;)
+
+UNION
+
+(SELECT codigo_modelo, descricao, valor, ano
+FROM modelo
+ORDER BY valor ASC
+LIMIT 1;)
+

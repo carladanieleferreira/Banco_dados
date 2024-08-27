@@ -1,0 +1,41 @@
+/* Lógico_2: */
+
+CREATE TABLE autor (
+    nome texto,
+    codigo_autor texto PRIMARY KEY
+);
+
+CREATE TABLE livro (
+    id_livro texto PRIMARY KEY,
+    titulo texto,
+    id_autor texto,
+    fk_autor_codigo_autor texto
+);
+
+CREATE TABLE usuario (
+    id_usuario texto PRIMARY KEY,
+    nome texto,
+    e_mail texto
+);
+
+CREATE TABLE _emprestimo (
+    fk_usuario_id_usuario texto,
+    fk_livro_id_livro texto,
+    id_emprestimo texto PRIMARY KEY,
+    data_emprestimo date,
+    data_devolucao date,
+    valor_emprestimo numerico
+);
+ 
+ALTER TABLE livro ADD CONSTRAINT FK_livro_2
+    FOREIGN KEY (fk_autor_codigo_autor)
+    REFERENCES autor (codigo_autor)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE _emprestimo ADD CONSTRAINT FK__emprestimo_2
+    FOREIGN KEY (fk_usuario_id_usuario)
+    REFERENCES usuario (id_usuario);
+ 
+ALTER TABLE _emprestimo ADD CONSTRAINT FK__emprestimo_3
+    FOREIGN KEY (fk_livro_id_livro)
+    REFERENCES livro (id_livro);

@@ -1,0 +1,39 @@
+Cadastrar marca de carro (codigo_marca e descricao)
+Cadastrar modelo de carro (codigo_modelo, descrição, valor, ano)
+
+criar as tabelas e relacionar marca e modelo
+
+popular as tabelas
+
+
+listar o carro e sua marca corresponde (inner join):
+select m.descricao, mo.descricao from modelo_carro mo
+inner join marca_carro m on mo.codigo_marca = m.codigo_marca
+order by m.descricao
+
+listar o carro mais caro e o nome do carro
+SELECT codigo_modelo, descricao, valor, ano
+FROM modelo_carro
+ORDER BY valor DESC
+LIMIT 1;
+
+listar o carro mais barato e o nome do carro
+SELECT codigo_modelo, descricao, valor, ano
+FROM modelo_carro
+ORDER BY valor asc 
+LIMIT 1
+
+listar o mais caro e o mais barato juntos com union
+(SELECT codigo_modelo, descricao, valor, ano
+FROM modelo_carro
+ORDER BY valor DESC
+LIMIT 1)
+union 
+(SELECT codigo_modelo, descricao, valor, ano
+FROM modelo_carro
+ORDER BY valor asc 
+LIMIT 1);
+*o union precisa ter o mesmo numero de colunas nos dois 
+
+listar o total de carros cadastrados
+select count(mc.codigo_modelo) from modelo_carro mc 
